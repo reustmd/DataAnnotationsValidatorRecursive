@@ -105,5 +105,22 @@ namespace DataAnnotationsValidator.Tests
 			Assert.AreEqual(1, validationResults.Count);
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "GrandChild PropertyA and PropertyB cannot add up to more than 10"));
 		}
+
+		[Test]
+		public void TryValidateObject_includes_errors_from_all_objects()
+		{
+			var parent = new Parent { PropertyA = 5, PropertyB = 6 };
+			parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
+			parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
+			var validationResults = new List<ValidationResult>();
+
+			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+
+			Assert.IsFalse(result);
+			Assert.AreEqual(3, validationResults.Count);
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "Parent PropertyA and PropertyB cannot add up to more than 10"));
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "Child PropertyA and PropertyB cannot add up to more than 10"));
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "GrandChild PropertyA and PropertyB cannot add up to more than 10"));
+		}
 	}
 }

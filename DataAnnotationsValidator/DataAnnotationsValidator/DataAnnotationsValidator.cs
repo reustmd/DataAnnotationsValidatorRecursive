@@ -29,12 +29,12 @@ namespace DataAnnotationsValidator
 				{
 					foreach (var enumObj in asEnumerable)
 					{
-						result = result && TryValidateObjectRecursive(enumObj, results);	
+						result = TryValidateObjectRecursive(enumObj, results) && result;	
 					}
 				}
 				else
 				{
-					result = result && TryValidateObjectRecursive(value, results);
+					result = TryValidateObjectRecursive(value, results) && result;
 				}
 			}
 
