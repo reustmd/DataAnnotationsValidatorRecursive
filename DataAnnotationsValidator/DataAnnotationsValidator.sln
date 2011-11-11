@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnnotationsValidator.Tests", "DataAnnotationsValidator.Tests\DataAnnotationsValidator.Tests.csproj", "{019E325C-9923-4643-8834-1A301F148093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAnnotationsValidator", "DataAnnotationsValidator\DataAnnotationsValidator.csproj", "{218B0C2C-19AD-4C7B-B583-840FF755A76D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{019E325C-9923-4643-8834-1A301F148093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019E325C-9923-4643-8834-1A301F148093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019E325C-9923-4643-8834-1A301F148093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019E325C-9923-4643-8834-1A301F148093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{218B0C2C-19AD-4C7B-B583-840FF755A76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{218B0C2C-19AD-4C7B-B583-840FF755A76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{218B0C2C-19AD-4C7B-B583-840FF755A76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{218B0C2C-19AD-4C7B-B583-840FF755A76D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
