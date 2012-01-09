@@ -5,21 +5,23 @@ using System.Linq;
 
 namespace DataAnnotationsValidator
 {
-	public static class DataAnnotationsValidator
+	public class DataAnnotationsValidator : IDataAnnotationsValidator
 	{
-		public static bool TryValidateObject(object obj, ICollection<ValidationResult> results)
+		public bool TryValidateObject(object obj, ICollection<ValidationResult> results)
 		{
 			return Validator.TryValidateObject(obj, new ValidationContext(obj, null, null), results, true);
 		}
 
-		public static bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results)
+		public bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results)
 		{
 			bool result = TryValidateObject(obj, results);
 
-			var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead).ToList();
+			var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead && !prop.GetCustomAttributes(typeof(SkipRecursiveValidation), false).Any()).ToList();
 
 			foreach (var property in properties)
 			{
+				if (property.PropertyType == typeof(string) || property.PropertyType.IsValueType) continue;
+
 				var value = obj.GetPropertyValue(property.Name);
 
 				if (value == null) continue;
@@ -29,7 +31,7 @@ namespace DataAnnotationsValidator
 				{
 					foreach (var enumObj in asEnumerable)
 					{
-						result = TryValidateObjectRecursive(enumObj, results) && result;	
+						result = TryValidateObjectRecursive(enumObj, results) && result;
 					}
 				}
 				else

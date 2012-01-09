@@ -8,13 +8,21 @@ namespace DataAnnotationsValidator.Tests
 	[TestFixture]
 	public class DataAnnotationsValidatorTests
 	{
+		private IDataAnnotationsValidator _validator;
+
+		[SetUp]
+		public void Setup()
+		{
+			_validator = new DataAnnotationsValidator();
+		}
+
 		[Test]
 		public void TryValidateObject_on_valid_parent_returns_no_errors()
 		{
 			var parent = new Parent {PropertyA = 1, PropertyB = 1};
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObject(parent, validationResults);
+			var result = _validator.TryValidateObject(parent, validationResults);
 
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, validationResults.Count);
@@ -26,7 +34,7 @@ namespace DataAnnotationsValidator.Tests
 			var parent = new Parent { PropertyA = null, PropertyB = null };
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObject(parent, validationResults);
+			var result = _validator.TryValidateObject(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(2, validationResults.Count);
@@ -40,7 +48,7 @@ namespace DataAnnotationsValidator.Tests
 			var parent = new Parent { PropertyA = 5, PropertyB = 6 };
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObject(parent, validationResults);
+			var result = _validator.TryValidateObject(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, validationResults.Count);
@@ -54,11 +62,24 @@ namespace DataAnnotationsValidator.Tests
 			parent.Child = new Child{PropertyA = null, PropertyB = 5};
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, validationResults.Count);
 			Assert.AreEqual("Child PropertyA is required", validationResults[0].ErrorMessage);
+		}
+
+		[Test]
+		public void TryValidateObjectRecursive_ignored_errors_when_child_class_has_SkipRecursiveValidationProperty()
+		{
+			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
+			parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+			parent.SkippedChild = new Child { PropertyA = null, PropertyB = 1 };
+			var validationResults = new List<ValidationResult>();
+
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
+
+			Assert.IsTrue(result);
 		}
 
 		[Test]
@@ -68,7 +89,7 @@ namespace DataAnnotationsValidator.Tests
 			parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, validationResults.Count);
@@ -83,7 +104,7 @@ namespace DataAnnotationsValidator.Tests
 			parent.Child.GrandChildren = new [] {new GrandChild{PropertyA = 11, PropertyB = 11}};
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(2, validationResults.Count);
@@ -99,7 +120,7 @@ namespace DataAnnotationsValidator.Tests
 			parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, validationResults.Count);
@@ -114,7 +135,7 @@ namespace DataAnnotationsValidator.Tests
 			parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
 			var validationResults = new List<ValidationResult>();
 
-			var result = DataAnnotationsValidator.TryValidateObjectRecursive(parent, validationResults);
+			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
 
 			Assert.IsFalse(result);
 			Assert.AreEqual(3, validationResults.Count);

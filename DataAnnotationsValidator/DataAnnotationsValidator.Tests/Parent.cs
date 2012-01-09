@@ -15,6 +15,9 @@ namespace DataAnnotationsValidator.Tests
 
 		public Child Child { get; set; }
 
+		[SkipRecursiveValidation]
+		public Child SkippedChild { get; set; }
+
 		IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
 		{
 			if (PropertyA.HasValue && PropertyB.HasValue && (PropertyA + PropertyB > 10))
