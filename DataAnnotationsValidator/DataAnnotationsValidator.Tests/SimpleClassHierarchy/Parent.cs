@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAnnotationsValidator.Tests
+namespace DataAnnotationsValidator.Tests.SimpleClassHierarchy
 {
-	public class Parent : IValidatableObject
+	public class Parent : BaseParent, IValidatableObject
 	{
 		[Required(ErrorMessage = "Parent PropertyA is required")]
 		[Range(0, 10, ErrorMessage = "Parent PropertyA not within range")]

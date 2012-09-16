@@ -7,5 +7,6 @@ namespace DataAnnotationsValidator
 	{
 		bool TryValidateObject(object obj, ICollection<ValidationResult> results);
 		bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results);
+		bool TryValidateObjectRecursiveIncludingBaseTypes<T>(T obj, List<ValidationResult> results);
 	}
 }

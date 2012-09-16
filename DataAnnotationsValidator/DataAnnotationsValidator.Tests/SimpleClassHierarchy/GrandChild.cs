@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAnnotationsValidator.Tests
+namespace DataAnnotationsValidator.Tests.SimpleClassHierarchy
 {
 	public class GrandChild : IValidatableObject
 	{

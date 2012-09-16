@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using DataAnnotationsValidator.Tests.ClassHierarchyWithSkippedIValidatableObjectLevels;
+using DataAnnotationsValidator.Tests.SimpleClassHierarchy;
 using NUnit.Framework;
 
 namespace DataAnnotationsValidator.Tests
@@ -142,6 +144,38 @@ namespace DataAnnotationsValidator.Tests
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "Parent PropertyA and PropertyB cannot add up to more than 10"));
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "Child PropertyA and PropertyB cannot add up to more than 10"));
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "GrandChild PropertyA and PropertyB cannot add up to more than 10"));
+		}
+
+		[Test]
+		public void TryValidateObject_calls_validate_on_base_classes_even_when_some_including_root_object_are_not_IValidatableObject()
+		{
+			var parent = new NonValidatableGrandparent();
+			parent.ValidatableParentIsValid = false;
+			parent.ValidatableGrandChildIsValid = false;
+
+			var validationResults = new List<ValidationResult>();
+			var result = _validator.TryValidateObjectRecursiveIncludingBaseTypes(parent, validationResults);
+
+			Assert.IsFalse(result);
+			Assert.AreEqual(2, validationResults.Count);
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "ValidatableParent is invalid"));
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "ValidatableGrandChild is invalid"));
+		}
+
+		[Test]
+		public void TryValidateObject_calls_validate_on_base_classes_even_when_some_excluding_root_object_are_not_IValidatableObject()
+		{
+			var parent = new ValidatableParent();
+			parent.ValidatableParentIsValid = false;
+			parent.ValidatableGrandChildIsValid = false;
+
+			var validationResults = new List<ValidationResult>();
+			var result = _validator.TryValidateObjectRecursiveIncludingBaseTypes(parent, validationResults);
+
+			Assert.IsFalse(result);
+			Assert.AreEqual(2, validationResults.Count);
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "ValidatableParent is invalid"));
+			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "ValidatableGrandChild is invalid"));
 		}
 	}
 }
