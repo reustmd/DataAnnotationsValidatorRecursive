@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 
 namespace DataAnnotationsValidator
 {
@@ -31,12 +32,30 @@ namespace DataAnnotationsValidator
 				{
 					foreach (var enumObj in asEnumerable)
 					{
-						result = TryValidateObjectRecursive(enumObj, results) && result;
+						var nestedResults = new List<ValidationResult>();
+						if (!TryValidateObjectRecursive(enumObj, nestedResults))
+						{
+							result = false;
+							foreach (var validationResult in nestedResults)
+							{
+								PropertyInfo property1 = property;
+								results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
+							}
+						};
 					}
 				}
 				else
 				{
-					result = TryValidateObjectRecursive(value, results) && result;
+					var nestedResults = new List<ValidationResult>();
+					if (!TryValidateObjectRecursive(value, nestedResults))
+					{
+						result = false;
+						foreach (var validationResult in nestedResults)
+						{
+							PropertyInfo property1 = property;
+							results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
+						}
+					};
 				}
 			}
 
