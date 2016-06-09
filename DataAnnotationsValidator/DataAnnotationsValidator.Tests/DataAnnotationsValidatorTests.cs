@@ -158,5 +158,28 @@ namespace DataAnnotationsValidator.Tests
 			Assert.AreEqual("Child PropertyA is required", validationResults[0].ErrorMessage);
 			Assert.AreEqual("Child.PropertyA", validationResults[0].MemberNames.First());
 		}
+
+        [Test]
+        public void TryValidateObject_object_with_dictionary_does_not_fail()
+        {
+            var classWithDictionary = new ClassWithDictionary
+            {
+                Objects =
+                    new List<Dictionary<string, Child>>{
+                    new Dictionary<string, Child>
+                {
+                    { "key", new Child
+                    {
+                        PropertyA = 1,
+                    PropertyB = 2
+                    } } } }
+            };
+            var validationResults = new List<ValidationResult>();
+
+            var result = _validator.TryValidateObjectRecursive(classWithDictionary, validationResults);
+
+            Assert.IsTrue(result);
+            Assert.IsEmpty(validationResults);
+        }
 	}
 }

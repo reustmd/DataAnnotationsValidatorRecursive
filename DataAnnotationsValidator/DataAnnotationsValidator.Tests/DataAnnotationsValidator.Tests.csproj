@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Child.cs" />
+    <Compile Include="ClassWithDictionary.cs" />
     <Compile Include="DataAnnotationsValidatorTests.cs" />
     <Compile Include="GrandChild.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
