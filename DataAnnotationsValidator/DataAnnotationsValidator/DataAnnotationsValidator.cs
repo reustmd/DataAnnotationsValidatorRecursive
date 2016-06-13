@@ -17,7 +17,9 @@ namespace DataAnnotationsValidator
 		{
 			bool result = TryValidateObject(obj, results);
 
-			var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead && !prop.GetCustomAttributes(typeof(SkipRecursiveValidation), false).Any()).ToList();
+            var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead 
+                && !prop.GetCustomAttributes(typeof(SkipRecursiveValidation), false).Any() 
+                && prop.GetIndexParameters().Length == 0).ToList();
 
 			foreach (var property in properties)
 			{
