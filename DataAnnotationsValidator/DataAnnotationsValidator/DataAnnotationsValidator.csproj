@@ -57,6 +57,7 @@
     <None Include="..\DataAnnotationsValidatorRecursive.snk">
       <Link>DataAnnotationsValidatorRecursive.snk</Link>
     </None>
+    <None Include="DataAnnotationsValidator.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
