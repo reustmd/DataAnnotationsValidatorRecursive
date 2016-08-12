@@ -8,14 +8,14 @@ namespace DataAnnotationsValidator
 {
 	public class DataAnnotationsValidator : IDataAnnotationsValidator
 	{
-		public bool TryValidateObject(object obj, ICollection<ValidationResult> results)
+		public bool TryValidateObject(object obj, ICollection<ValidationResult> results, IDictionary<object, object> validationContextItems = null)
 		{
-			return Validator.TryValidateObject(obj, new ValidationContext(obj, null, null), results, true);
+			return Validator.TryValidateObject(obj, new ValidationContext(obj, null, validationContextItems), results, true);
 		}
 
-		public bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results)
+		public bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results, IDictionary<object, object> validationContextItems = null)
 		{
-			bool result = TryValidateObject(obj, results);
+			bool result = TryValidateObject(obj, results, validationContextItems);
 
             var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead 
                 && !prop.GetCustomAttributes(typeof(SkipRecursiveValidation), false).Any() 
@@ -35,7 +35,7 @@ namespace DataAnnotationsValidator
 					foreach (var enumObj in asEnumerable)
 					{
 						var nestedResults = new List<ValidationResult>();
-						if (!TryValidateObjectRecursive(enumObj, nestedResults))
+						if (!TryValidateObjectRecursive(enumObj, nestedResults, validationContextItems))
 						{
 							result = false;
 							foreach (var validationResult in nestedResults)
@@ -49,7 +49,7 @@ namespace DataAnnotationsValidator
 				else
 				{
 					var nestedResults = new List<ValidationResult>();
-					if (!TryValidateObjectRecursive(value, nestedResults))
+					if (!TryValidateObjectRecursive(value, nestedResults, validationContextItems))
 					{
 						result = false;
 						foreach (var validationResult in nestedResults)

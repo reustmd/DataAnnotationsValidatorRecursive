@@ -15,6 +15,9 @@ namespace DataAnnotationsValidator.Tests
 
 		public IEnumerable<GrandChild> GrandChildren { get; set; } 
 
+		[SaveValidationContext]
+		public bool HasNoRealValidation { get; set; }
+
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			if (PropertyA.HasValue && PropertyB.HasValue && (PropertyA + PropertyB > 10))
