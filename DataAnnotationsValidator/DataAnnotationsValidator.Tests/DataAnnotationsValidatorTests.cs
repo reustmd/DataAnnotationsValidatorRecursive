@@ -116,7 +116,7 @@ namespace DataAnnotationsValidator.Tests
 		[Test]
 		public void TryValidateObjectRecursive_passes_validation_context_items_to_all_validation_calls()
 		{
-			var parent = new Parent();
+      var parent = new Parent();
 			parent.Child = new Child();
 			parent.Child.GrandChildren = new [] {new GrandChild()};
 			var validationResults = new List<ValidationResult>();
@@ -126,7 +126,7 @@ namespace DataAnnotationsValidator.Tests
 			_validator.TryValidateObjectRecursive(parent, validationResults, contextItems);
 
 			Assert.AreEqual(3, SaveValidationContextAttribute.SavedContexts.Count, "Test expects 3 validated properties in the object graph to have a SaveValidationContextAttribute");
-			Assert.That(SaveValidationContextAttribute.SavedContexts.Select(c => c.Items).All(items => items["key"] == contextItems["key"]));
+  Assert.That(SaveValidationContextAttribute.SavedContexts.Select(c => c.Items).All(items => items["key"] == contextItems["key"]));
 		}
 
 		[Test]
