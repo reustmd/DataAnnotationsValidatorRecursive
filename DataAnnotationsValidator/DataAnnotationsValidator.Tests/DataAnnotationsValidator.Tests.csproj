@@ -58,6 +58,7 @@
     <Compile Include="GrandChild.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Parent.cs" />
+    <Compile Include="SaveValidationContextAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

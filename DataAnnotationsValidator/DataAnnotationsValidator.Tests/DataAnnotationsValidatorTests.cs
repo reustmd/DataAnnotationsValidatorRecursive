@@ -13,6 +13,7 @@ namespace DataAnnotationsValidator.Tests
 		[SetUp]
 		public void Setup()
 		{
+			SaveValidationContextAttribute.SavedContexts.Clear();
 			_validator = new DataAnnotationsValidator();
 		}
 
@@ -110,6 +111,22 @@ namespace DataAnnotationsValidator.Tests
 			Assert.AreEqual(2, validationResults.Count);
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "GrandChild PropertyA not within range"));
 			Assert.AreEqual(1, validationResults.ToList().Count(x => x.ErrorMessage == "GrandChild PropertyB not within range"));
+		}
+
+		[Test]
+		public void TryValidateObjectRecursive_passes_validation_context_items_to_all_validation_calls()
+		{
+      var parent = new Parent();
+			parent.Child = new Child();
+			parent.Child.GrandChildren = new [] {new GrandChild()};
+			var validationResults = new List<ValidationResult>();
+
+			var contextItems = new Dictionary<object, object> {{"key", 12345}};
+
+			_validator.TryValidateObjectRecursive(parent, validationResults, contextItems);
+
+			Assert.AreEqual(3, SaveValidationContextAttribute.SavedContexts.Count, "Test expects 3 validated properties in the object graph to have a SaveValidationContextAttribute");
+  Assert.That(SaveValidationContextAttribute.SavedContexts.Select(c => c.Items).All(items => items["key"] == contextItems["key"]));
 		}
 
 		[Test]
