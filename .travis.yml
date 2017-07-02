@@ -1,2 +1,8 @@
 language: csharp
 solution: DataAnnotationsValidator/DataAnnotationsValidator.sln
+install:
+  - nuget restore DataAnnotationsValidator/DataAnnotationsValidator.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release DataAnnotationsValidator/DataAnnotationsValidator.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./DataAnnotationsValidator/DataAnnotationsValidator.Tests/bin/Release/DataAnnotationsValidator.Tests.dll
