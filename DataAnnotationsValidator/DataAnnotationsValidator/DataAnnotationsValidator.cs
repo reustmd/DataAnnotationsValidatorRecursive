@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +15,18 @@ namespace DataAnnotationsValidator
 
         public bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results, IDictionary<object, object> validationContextItems = null)
         {
+            return TryValidateObjectRecursive(obj, results, new HashSet<object>(), validationContextItems);
+        }
+
+        private bool TryValidateObjectRecursive<T>(T obj, List<ValidationResult> results, ISet<object> validatedObjects, IDictionary<object, object> validationContextItems = null)
+        {
+            //short-circuit to avoid infinit loops on cyclical object graphs
+            if (validatedObjects.Contains(obj))
+            {
+                return true;
+            }
+
+            validatedObjects.Add(obj);
             bool result = TryValidateObject(obj, results, validationContextItems);
 
             var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead
@@ -35,7 +47,7 @@ namespace DataAnnotationsValidator
                     foreach (var enumObj in asEnumerable)
                     {
                         var nestedResults = new List<ValidationResult>();
-                        if (!TryValidateObjectRecursive(enumObj, nestedResults, validationContextItems))
+                        if (!TryValidateObjectRecursive(enumObj, nestedResults, validatedObjects, validationContextItems))
                         {
                             result = false;
                             foreach (var validationResult in nestedResults)
@@ -49,7 +61,7 @@ namespace DataAnnotationsValidator
                 else
                 {
                     var nestedResults = new List<ValidationResult>();
-                    if (!TryValidateObjectRecursive(value, nestedResults, validationContextItems))
+                    if (!TryValidateObjectRecursive(value, nestedResults, validatedObjects, validationContextItems))
                     {
                         result = false;
                         foreach (var validationResult in nestedResults)
