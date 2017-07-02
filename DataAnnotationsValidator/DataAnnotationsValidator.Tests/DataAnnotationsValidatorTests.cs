@@ -60,7 +60,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObjectRecursive_returns_errors_when_child_class_has_invalid_properties()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = null, PropertyB = 5 };
+            parent.Child = new Child { Parent = parent, PropertyA = null, PropertyB = 5 };
             var validationResults = new List<ValidationResult>();
 
             var result = _validator.TryValidateObjectRecursive(parent, validationResults);
@@ -74,7 +74,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObjectRecursive_ignored_errors_when_child_class_has_SkipRecursiveValidationProperty()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+            parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
             parent.SkippedChild = new Child { PropertyA = null, PropertyB = 1 };
             var validationResults = new List<ValidationResult>();
 
@@ -87,7 +87,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObjectRecursive_calls_IValidatableObject_method_on_child_class()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
+            parent.Child = new Child { Parent = parent, PropertyA = 5, PropertyB = 6 };
             var validationResults = new List<ValidationResult>();
 
             var result = _validator.TryValidateObjectRecursive(parent, validationResults);
@@ -101,7 +101,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObjectRecursive_returns_errors_when_grandchild_class_has_invalid_properties()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+            parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
             parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 11, PropertyB = 11 } };
             var validationResults = new List<ValidationResult>();
 
@@ -133,7 +133,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObject_calls_grandchild_IValidatableObject_method()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+            parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
             parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
             var validationResults = new List<ValidationResult>();
 
@@ -148,7 +148,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObject_includes_errors_from_all_objects()
         {
             var parent = new Parent { PropertyA = 5, PropertyB = 6 };
-            parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
+            parent.Child = new Child { Parent = parent, PropertyA = 5, PropertyB = 6 };
             parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
             var validationResults = new List<ValidationResult>();
 
@@ -165,7 +165,7 @@ namespace DataAnnotationsValidator.Tests
         public void TryValidateObject_modifies_membernames_for_nested_properties()
         {
             var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-            parent.Child = new Child { PropertyA = null, PropertyB = 5 };
+            parent.Child = new Child { Parent = parent, PropertyA = null, PropertyB = 5 };
             var validationResults = new List<ValidationResult>();
 
             var result = _validator.TryValidateObjectRecursive(parent, validationResults);
@@ -179,6 +179,7 @@ namespace DataAnnotationsValidator.Tests
         [Test]
         public void TryValidateObject_object_with_dictionary_does_not_fail()
         {
+            var parent = new Parent { PropertyA = 1, PropertyB = 1 };
             var classWithDictionary = new ClassWithDictionary
             {
                 Objects = new List<Dictionary<string, Child>>
@@ -188,6 +189,7 @@ namespace DataAnnotationsValidator.Tests
                         { "key",
                             new Child
                             {
+                                Parent = parent,
                                 PropertyA = 1,
                                 PropertyB = 2
                             }
