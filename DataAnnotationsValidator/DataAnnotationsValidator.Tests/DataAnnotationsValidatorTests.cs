@@ -60,7 +60,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObjectRecursive_returns_errors_when_child_class_has_invalid_properties()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child{PropertyA = null, PropertyB = 5};
+			parent.Child = new Child{ Parent = parent, PropertyA = null, PropertyB = 5 };
 			var validationResults = new List<ValidationResult>();
 
 			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
@@ -74,7 +74,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObjectRecursive_ignored_errors_when_child_class_has_SkipRecursiveValidationProperty()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+			parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
 			parent.SkippedChild = new Child { PropertyA = null, PropertyB = 1 };
 			var validationResults = new List<ValidationResult>();
 
@@ -87,7 +87,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObjectRecursive_calls_IValidatableObject_method_on_child_class()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
+			parent.Child = new Child { Parent = parent, PropertyA = 5, PropertyB = 6 };
 			var validationResults = new List<ValidationResult>();
 
 			var result = _validator.TryValidateObjectRecursive(parent, validationResults);
@@ -101,7 +101,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObjectRecursive_returns_errors_when_grandchild_class_has_invalid_properties()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+			parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
 			parent.Child.GrandChildren = new [] {new GrandChild{PropertyA = 11, PropertyB = 11}};
 			var validationResults = new List<ValidationResult>();
 
@@ -116,8 +116,8 @@ namespace DataAnnotationsValidator.Tests
 		[Test]
 		public void TryValidateObjectRecursive_passes_validation_context_items_to_all_validation_calls()
 		{
-      var parent = new Parent();
-			parent.Child = new Child();
+            var parent = new Parent();
+            parent.Child = new Child { Parent = parent };
 			parent.Child.GrandChildren = new [] {new GrandChild()};
 			var validationResults = new List<ValidationResult>();
 
@@ -126,14 +126,14 @@ namespace DataAnnotationsValidator.Tests
 			_validator.TryValidateObjectRecursive(parent, validationResults, contextItems);
 
 			Assert.AreEqual(3, SaveValidationContextAttribute.SavedContexts.Count, "Test expects 3 validated properties in the object graph to have a SaveValidationContextAttribute");
-  Assert.That(SaveValidationContextAttribute.SavedContexts.Select(c => c.Items).All(items => items["key"] == contextItems["key"]));
+            Assert.That(SaveValidationContextAttribute.SavedContexts.Select(c => c.Items).All(items => items["key"] == contextItems["key"]));
 		}
 
 		[Test]
 		public void TryValidateObject_calls_grandchild_IValidatableObject_method()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child { PropertyA = 1, PropertyB = 1 };
+			parent.Child = new Child { Parent = parent, PropertyA = 1, PropertyB = 1 };
 			parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
 			var validationResults = new List<ValidationResult>();
 
@@ -148,7 +148,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObject_includes_errors_from_all_objects()
 		{
 			var parent = new Parent { PropertyA = 5, PropertyB = 6 };
-			parent.Child = new Child { PropertyA = 5, PropertyB = 6 };
+			parent.Child = new Child { Parent = parent, PropertyA = 5, PropertyB = 6 };
 			parent.Child.GrandChildren = new[] { new GrandChild { PropertyA = 5, PropertyB = 6 } };
 			var validationResults = new List<ValidationResult>();
 
@@ -165,7 +165,7 @@ namespace DataAnnotationsValidator.Tests
 		public void TryValidateObject_modifies_membernames_for_nested_properties()
 		{
 			var parent = new Parent { PropertyA = 1, PropertyB = 1 };
-			parent.Child = new Child { PropertyA = null, PropertyB = 5 };
+			parent.Child = new Child { Parent = parent, PropertyA = null, PropertyB = 5 };
 			var validationResults = new List<ValidationResult>();
 
 			var result = _validator.TryValidateObjectRecursive(parent, validationResults);

@@ -5,6 +5,9 @@ namespace DataAnnotationsValidator.Tests
 {
 	public class Child : IValidatableObject
 	{
+        [Required(ErrorMessage = "Child Parent is required")]
+        public Parent Parent { get; set; }
+
 		[Required(ErrorMessage = "Child PropertyA is required")]
 		[Range(0, 10, ErrorMessage = "Child PropertyA not within range")]
 		public int? PropertyA { get; set; }
