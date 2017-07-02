@@ -4,10 +4,7 @@
 bin
 obj
 *resharper*
-/Admin/AdminBackEnd/AdminBackEnd.Publish.xml
-/Rest API/RestApiEnd/RestApiEnd.Publish.xml
-/Common/GroupCommerce.Emailing/Emailing/Emailing.sln
-/Common/GroupCommerce.Emailing.Tests/GroupCommerce.Emailing.Tests-pmn.csproj
-/Common/GroupCommerce.Emailing/GroupCommerce.Emailing-pmn.csproj
-/Platform/Frontend/App_Data/logs/
+*.userprefs
+testrunner*
 TestResult.xml
+
