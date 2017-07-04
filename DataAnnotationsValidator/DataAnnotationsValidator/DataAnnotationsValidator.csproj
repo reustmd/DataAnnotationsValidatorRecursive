@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +13,17 @@
     <AssemblyName>DataAnnotationsValidator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>DataAnnotationsValidator</PackageId>
+    <PackageVersion>1.0.1.0</PackageVersion>
+    <Authors>Mike Reust</Authors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive/blob/master/License.md</PackageLicenseUrl>
+    <Owners>Mike Reust</Owners>
+    <PackageProjectUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive</PackageProjectUrl>
+    <PackageTags>DataAnnotation validation validator</PackageTags>
+    <Title>DataAnnotationsValidator</Title>
+    <Description>The helper will recursively traverse your object graph and invoke validation against DataAnnotations. This originated from following Stackoverflow answer: http://stackoverflow.com/a/8090614/605586</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +70,7 @@
       <Link>DataAnnotationsValidatorRecursive.snk</Link>
     </None>
     <None Include="DataAnnotationsValidator.nuspec" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -67,4 +80,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.1.248\build\NuGet.Build.Packaging.targets')" />
 </Project>
