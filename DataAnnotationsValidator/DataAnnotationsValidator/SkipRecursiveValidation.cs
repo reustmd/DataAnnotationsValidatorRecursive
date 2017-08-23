@@ -2,7 +2,7 @@
 
 namespace DataAnnotationsValidator
 {
-	public class SkipRecursiveValidation : Attribute
+	public class SkipRecursiveValidationAttribute : Attribute
 	{
 	}
 }
