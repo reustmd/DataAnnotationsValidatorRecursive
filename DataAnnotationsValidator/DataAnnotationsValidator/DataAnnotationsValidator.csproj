@@ -63,7 +63,7 @@
     <Compile Include="IDataAnnotationsValidator.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SkipRecursiveValidation.cs" />
+    <Compile Include="SkipRecursiveValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\DataAnnotationsValidatorRecursive.snk">
