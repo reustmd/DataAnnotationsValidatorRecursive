@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAnnotationsValidator.Tests
 {
-    public class SaveValidationContextAttribute: ValidationAttribute
+    public class SaveValidationContextAttribute : ValidationAttribute
     {
         public static IList<ValidationContext> SavedContexts = new List<ValidationContext>();
 
