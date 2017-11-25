@@ -1,5 +1,7 @@
 # DataAnnotationsValidatorRecursive
 
+Multi-targeting cross-platform project pointing at .netstandard 2.0 and .net framework 4.7. 
+
 The helper will recursively traverse your object graph and invoke validation against DataAnnotations.
 This originated from following Stackoverflow answer: http://stackoverflow.com/a/8090614/605586
 
