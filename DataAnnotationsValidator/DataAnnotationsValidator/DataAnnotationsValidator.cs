@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
 
 namespace DataAnnotationsValidator
 {
@@ -27,10 +26,10 @@ namespace DataAnnotationsValidator
             }
 
             validatedObjects.Add(obj);
-            bool result = TryValidateObject(obj, results, validationContextItems);
+            var result = TryValidateObject(obj, results, validationContextItems);
 
             var properties = obj.GetType().GetProperties().Where(prop => prop.CanRead
-                && !prop.GetCustomAttributes(typeof(SkipRecursiveValidation), false).Any()
+                && !prop.GetCustomAttributes(typeof(SkipRecursiveValidationAttribute), false).Any()
                 && prop.GetIndexParameters().Length == 0).ToList();
 
             foreach (var property in properties)
@@ -41,8 +40,7 @@ namespace DataAnnotationsValidator
 
                 if (value == null) continue;
 
-                var asEnumerable = value as IEnumerable;
-                if (asEnumerable != null)
+                if (value is IEnumerable asEnumerable)
                 {
                     foreach (var enumObj in asEnumerable)
                     {
@@ -52,10 +50,10 @@ namespace DataAnnotationsValidator
                             result = false;
                             foreach (var validationResult in nestedResults)
                             {
-                                PropertyInfo property1 = property;
-                                results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
+                                results.Add(new ValidationResult(validationResult.ErrorMessage, 
+                                    validationResult.MemberNames.Select(member => $"{property.Name}{'.'}{member}")));
                             }
-                        };
+                        }
                     }
                 }
                 else
@@ -66,10 +64,10 @@ namespace DataAnnotationsValidator
                         result = false;
                         foreach (var validationResult in nestedResults)
                         {
-                            PropertyInfo property1 = property;
-                            results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
+                            results.Add(new ValidationResult(validationResult.ErrorMessage, 
+                                validationResult.MemberNames.Select(member => $"{property.Name}{'.'}{member}")));
                         }
-                    };
+                    }
                 }
             }
 
