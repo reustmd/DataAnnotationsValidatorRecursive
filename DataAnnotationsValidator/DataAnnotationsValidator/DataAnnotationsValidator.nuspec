@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DataAnnotationsValidator</id>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <authors>Mike Reust</authors>
     <owners>Mike Reust</owners>
     <licenseUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive/blob/master/License.md</licenseUrl>
