@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>DataAnnotationsValidator</PackageId>
-    <PackageVersion>1.0.1.0</PackageVersion>
+    <PackageVersion>2.1.0.0</PackageVersion>
     <Authors>Mike Reust</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageLicenseUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive/blob/master/License.md</PackageLicenseUrl>
