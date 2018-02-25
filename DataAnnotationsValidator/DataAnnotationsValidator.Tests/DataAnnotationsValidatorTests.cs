@@ -204,5 +204,31 @@ namespace DataAnnotationsValidator.Tests
             Assert.IsTrue(result);
             Assert.IsEmpty(validationResults);
         }
+
+        [Test]
+        public void TryValidateObject_object_with_null_enumeration_values_does_not_fail()
+        {
+            var parent = new Parent { PropertyA = 1, PropertyB = 1 };
+            var classWithNullableEnumeration = new ClassWithNullableEnumeration
+            {
+                Objects = new List<Child>
+                {
+                    null,
+                    new Child
+                    {
+                        Parent = parent,
+                        PropertyA = 1,
+                        PropertyB = 2
+                    }
+                }
+            };
+            var validationResults = new List<ValidationResult>();
+
+            var result = _validator.TryValidateObjectRecursive(classWithNullableEnumeration, validationResults);
+
+            Assert.IsTrue(result);
+            Assert.IsEmpty(validationResults);
+        }
+ 
     }
 }

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Child.cs" />
+    <Compile Include="ClassWithNullableEnumeration.cs" />
     <Compile Include="ClassWithDictionary.cs" />
     <Compile Include="DataAnnotationsValidatorTests.cs" />
     <Compile Include="GrandChild.cs" />
