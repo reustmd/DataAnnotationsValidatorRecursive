@@ -46,16 +46,18 @@ namespace DataAnnotationsValidator
                 {
                     foreach (var enumObj in asEnumerable)
                     {
-                        var nestedResults = new List<ValidationResult>();
-                        if (!TryValidateObjectRecursive(enumObj, nestedResults, validatedObjects, validationContextItems))
-                        {
-                            result = false;
-                            foreach (var validationResult in nestedResults)
-                            {
-                                PropertyInfo property1 = property;
-                                results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
-                            }
-                        };
+                        if ( enumObj != null) {
+                           var nestedResults = new List<ValidationResult>();
+                           if (!TryValidateObjectRecursive(enumObj, nestedResults, validatedObjects, validationContextItems))
+                           {
+                               result = false;
+                               foreach (var validationResult in nestedResults)
+                               {
+                                   PropertyInfo property1 = property;
+                                   results.Add(new ValidationResult(validationResult.ErrorMessage, validationResult.MemberNames.Select(x => property1.Name + '.' + x)));
+                               }
+                           };
+                        }
                     }
                 }
                 else
