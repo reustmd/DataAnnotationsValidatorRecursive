@@ -230,5 +230,15 @@ namespace DataAnnotationsValidator.Tests
             Assert.IsEmpty(validationResults);
         }
  
+        [Test]
+        public void TryValidateObjectRecursive_can_validate_page_model()
+        {
+            var parent = new TestPageModel();
+            var validationResults = new List<ValidationResult>();
+
+            var result = _validator.TryValidateObjectRecursive(parent, validationResults);
+
+            Assert.IsTrue(result);
+        }
     }
 }
