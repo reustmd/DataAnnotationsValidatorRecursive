@@ -5,10 +5,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>DataAnnotationsValidator</PackageId>
-    <PackageVersion>2.1.0.0</PackageVersion>
+    <PackageVersion>2.3.0.0</PackageVersion>
     <Authors>Mike Reust</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageLicenseUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive/blob/master/License.md</PackageLicenseUrl>
+    <PackageLicenseFile>License.md</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Owners>Mike Reust</Owners>
     <PackageProjectUrl>https://github.com/reustmd/DataAnnotationsValidatorRecursive</PackageProjectUrl>
     <PackageTags>DataAnnotation validation validator</PackageTags>
@@ -18,12 +19,18 @@
     <Product>TryValidateObjectRecursive</Product>
     <Description>Allows scanning object graph and validates every object using .NET standatd System.ComponentModel.DataAnnotations.Validator</Description>
     <Copyright>Copyright © 2018</Copyright>
-    <Version>2.2.0</Version>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <Version>2.3.0</Version>
+    <AssemblyVersion>2.3.0.0</AssemblyVersion>
+    <FileVersion>2.3.0.0</FileVersion>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Targeting .NET Standard 2.0; fixing recursively validating PageModel which throws System.Reflection.AmbiguousMatchException for ActionDescriptor property;</PackageReleaseNotes>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.1" PrivateAssets="All" />
+    <None Include="../../License.md" Pack="true" PackagePath="" />
+    <None Include="../../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
   </PropertyGroup>

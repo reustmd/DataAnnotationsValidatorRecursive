@@ -5,9 +5,9 @@ This originated from following Stackoverflow answer: http://stackoverflow.com/a/
 
 ## Installation
 
-Available as NuGet-Package `dataannotationsvalidator`:
+Available as NuGet-Package `DataAnnotationsValidator`:
 
-    Install-Package dataannotationsvalidator
+    Install-Package DataAnnotationsValidator
 
 ## Usage
 
